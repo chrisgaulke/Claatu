@@ -46,12 +46,15 @@ wd = os.getcwd()
 ####
 
 #eventually taken from command line or config file
-tree_fp = '/Users/gaulkec/Documents/Coevo_project/Co_evo_test_data/new_test_tree.tre'
+#if you use new.tre you must reset node1 to root bc it is already named. 
+tree_fp = '/Users/gaulkec/Desktop/Claatu_test_files/new.tre'
 
 #eventually taken from command line or config file
 tree_type = "newick"
 
 #might want to save bootstraps for latter
+#this labels tips as tip taxon (i.e., OTU or species name)
+
 def PrepTree(tree_fp, tree_type):
 	#import tree object
 	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
@@ -61,7 +64,7 @@ def PrepTree(tree_fp, tree_type):
 	k = 1
 	for i in node_it:
 		if i.label == None:
-			if hasattr(i, 'taxon') and i.taxon != None:
+			if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
 				i.label = i.taxon.label
 			else:
 				#continue
@@ -158,7 +161,7 @@ Should check out 'subprocess.call(['command', '-options'])'.
 # make into a dictionary
 
 #in future this will be read in from previous step automatically
-jplace_file = "/Users/gaulkec/Desktop/test.jplace" 
+jplace_file = "/Users/gaulkec/Desktop/Claatu_test_files/test2.jplace" 
 
 #tested 4/8/15
 
@@ -211,7 +214,7 @@ def EdgetoTail(jplace_tree):
 		#node name
 		name = s3[0]
 		name = name.strip(')(,')
-		if name == '':
+		if name == 'node1':
 			name = 'root'
 			tree_dict[edge_id] = name
 		else:
@@ -315,11 +318,12 @@ fields = ParseFields(parse_dict['fields'])
 
 
 #tested 4/8/15
-def MakeTailtoHead(dict):
+def MakeTailtoHead(dictx):
 	"this is a function to make a lookup table of tail nodes to head nodes"
 	tail_to_head = {}
-	for key, value in dict.items():
+	for key, value in dictx.items():
 		tail_node = tree1.find_node_with_label(value)
+		
 		head_node = tail_node.parent_node
 		if hasattr(head_node, 'label'):
 			tail_to_head[value] = head_node.label
