@@ -55,5 +55,8 @@ subprocess.call(['esl-alimerge', '--dna', '-o {0}/merged.sto'.format(ars.o),quer
 #now make ref package
 
 # my.refpkg   gg_20_log.txt --tree-file gg97_n20.tre
-subprocess.call(['taxit', 'create', '-l 16s_rRNA', '-P my.refpkg','--aln-fasta merged.sto', '--tree-stats {0}'.format(args.tree_stats), '--tree-file {0}'.format(args.t) ])
+subprocess.call(['taxit', 'create', '-l 16s_rRNA', '-P my.refpkg','--aln-fasta merged.sto', '--tree-stats {0}'.format(args.tree_stats), '--tree-file {0}'.format(args.t)])
+
+#run pplacer
+subprocess.call(['pplacer', '-c {0}my.refpkg/'.format(args.o), '-j {0}'.format(args.procs),'{0}merged.sto'.format(args.o)])
 
