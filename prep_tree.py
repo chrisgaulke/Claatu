@@ -101,7 +101,7 @@ def PickleMeTimbers(prepped_tree_obj, ancestor_lookup_table):
 
 tree1 = PrepTree(tree_fp, tree_type)  	
 
-#ancestor_lookup_dict = AncestorLookup(tree1)
+ancestor_lookup_dict = AncestorLookup(tree1)
 
 #write tree so it can be used by other programs
 #need to test that this can be used by other programs
