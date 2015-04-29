@@ -5,7 +5,7 @@
 
 #################
 #			    #
-#  travtree.py  #
+#  prep_tree.py #
 #               #
 #################
 
@@ -101,9 +101,7 @@ def PickleMeTimbers(prepped_tree_obj, ancestor_lookup_table):
 
 tree1 = PrepTree(tree_fp, tree_type)  	
 
-ancestor_lookup_dict = AncestorLookup(tree1)
-
-PickleMeTimbers(tree1, ancestor_lookup_dict)
+#ancestor_lookup_dict = AncestorLookup(tree1)
 
 #write tree so it can be used by other programs
 #need to test that this can be used by other programs
@@ -125,3 +123,6 @@ tree1.write_to_path(
         suppress_item_comments=True,
         node_label_element_separator=' ',
         node_label_compose_func=None)
+
+PickleMeTimbers(tree1, ancestor_lookup_dict)
+

@@ -8,18 +8,16 @@
 For now this module will only support working with the reference tree we provide
 but in the future I will write extensions that will do this for custom built packages as well'''
 
-
-#pplacer
-
-'''
-Need to:
-1. Make ref package for taxtasitic 
-2. Run pplacer
+#Requirements
 
 '''
 
-#in addition to python users will need infernal (I used v1.1.1 June 2012), pplacer (v1.1.alpha13r2-0-g79a8847), taxit v0.5.3, and perhaps FastTree (version 2.1.3 SSE3)
+infernal (I used v1.1.1 June 2012), 
+pplacer (v1.1.alpha13r2-0-g79a8847), 
+taxit v0.5.3,
+FastTree (version 2.1.3 SSE3)
 
+'''
 
 import argparse
 import subprocess
@@ -58,5 +56,5 @@ subprocess.call(['esl-alimerge', '--dna', '-o {0}/merged.sto'.format(ars.o),quer
 subprocess.call(['taxit', 'create', '-l 16s_rRNA', '-P my.refpkg','--aln-fasta merged.sto', '--tree-stats {0}'.format(args.tree_stats), '--tree-file {0}'.format(args.t)])
 
 #run pplacer
-subprocess.call(['pplacer', '-c {0}my.refpkg/'.format(args.o), '-j {0}'.format(args.procs),'{0}merged.sto'.format(args.o)])
+subprocess.call(['pplacer', '-c {0}my.refpkg/'.format(args.o), '-j {0}'.format(args.procs),'-p','{0}merged.sto'.format(args.o)])
 

@@ -15,29 +15,7 @@ import pickle
 import re
 import os
 
-'''
 
-This is the beginning of a script that will accomplish the following tasks
-
-1. De novo 16S tree 
-	a. Align and construct 16S tree
-	b. Construct a names file ( dictionary of rep seqs(keys) and all seqs identical to this seq (vals)  
-	c. Import tree
-	d. Use tree to make a node x sample file and populate it with data from tree and names file
-
-2. Traversal tool for any ref tree
-	a. Names nodes
-	b. Makes lookup table of ancestors of each node
-
-3. Read placed data on ref tree
-	a. Imports traversal tool names nodes and makes a lookup table. 
-	b. Run pplacer, import and parse pplacer outs. 
-	c. Collapse placements into nodes and make a samples x nodes count table . 
-
-4. Clade matrix analysis tools 
-	a. additional tools for traversing trees
-
-'''
 #get working directory. In the future would like to specify 
 wd = os.getcwd()
 
@@ -78,7 +56,7 @@ def PrepTree(tree_fp, tree_type):
 #write tree so it can be used by other programs
 #need to test that this can be used by other programs
 tree1.write_to_path(
-        'new.tre',
+        'new_prepped_tree.tre',
         'newick',
         taxon_set=None,
         suppress_leaf_taxon_labels=False,
@@ -136,8 +114,10 @@ def PickleMeTimbers(prepped_tree_obj, ancestor_lookup_table):
 	pickled_lookup.close()
 	return None
 
+#need to create a projects directory for storage of files
 tree1 = PrepTree(tree_fp, tree_type)  	
 
+#this should be in a different module.
 ancestor_lookup_dict = AncestorLookup(tree1)
 
 PickleMeTimbers(tree1, ancestor_lookup_dict)
