@@ -15,6 +15,7 @@ import pickle
 import re
 import os
 import argparse
+import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
@@ -124,5 +125,6 @@ tree1.write_to_path(
         node_label_element_separator=' ',
         node_label_compose_func=None)
 
+sys.setrecursionlimit(2000)
 PickleMeTimbers(tree1, ancestor_lookup_dict)
 
