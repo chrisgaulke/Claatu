@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Claatu::prep_tree -Prepares tree for use in Claatu 
+# Claatu::claatu_calcs - Tests for nestedness 
 #Copyright (C) 2015  Christopher A. Gaulke 
 #author contact: gaulkec@science.oregonstate.edu
 #
@@ -27,59 +27,24 @@
 #                  #
 ####################  
 
-#################
-#			    #
-#  prep_tree.py #
-#               #
-#################
+#####################
+#                   #
+#  claatu_calcs.py  #
+#                   #
+#####################
 
 
 import dendropy
-import re
-import os
 import argparse
-import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
+parser.add_argument("node_fp", help="file path to the a list of nodes (one per line) that are of interest")
 args = parser.parse_args()
-wd = os.getcwd()
-
-####
-#Prep Tree
-####
-
 tree_fp = args.tree_fp
-tree_type = "newick"
+node_fp = args.node_fp
 
-#might want to save bootstraps for latter
-#this labels tips as tip taxon (i.e., OTU or species name)
-
-def PrepTree(tree_fp, tree_type):
-	#import tree object
-	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
-	
-	#name nodes
-	node_it = tree1.preorder_node_iter()
-	k = 1
-	for i in node_it:
-		if i.label == None:
-			if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
-				i.label = i.taxon.label
-			else:
-				if hasattr(i, '_parent_node') and i._parent_node != None: #new
-					j = str(k)
-					i.label = "{0}{1}".format("node", j) 
-					k = k + 1
-				else:
-					i.label = "root"
-	return tree1
-
-
-
-####
-#Make node ancestor lookup table
-####
+tree1 = dendropy.Tree.get(path = "{0}".format(tree_fp), schema = "newick")
 
 def AncestorLookup(tree):
 	"This function makes a dictionary of the ancestors of each node"
@@ -94,14 +59,35 @@ def AncestorLookup(tree):
 		tip_ancestors[str(node.label)] = vals
 	return tip_ancestors
 
+def MakeNodeList(node_file):
+	"This func takes a file with one node per line and makes into a list for IsNested" 
+	with open(node_file) as f1:
+		nl = []
+		for line in f1:
+			line.strip()
+			nl.append(line)
+	return nl
 
+#This consumes lots of ram and might not be the right way to go about this. 
+#So I will only do it for the nodes that are interesting
+ 
+def IsNested(node_list, an_dict):
+	"Test if one node is nested in another"
+	nest_dict ={}
+	#node_list = node_list
+	for nodeA in node_list:
+		nodeA = nodeA.strip() 
+		nest_dict[nodeA] = {}
+		for nodeB in node_list:
+			nodeB = nodeB.strip()
+			if nodeB in an_dict[nodeA]:
+				nest_dict[nodeA][nodeB] = "True"
+			else:
+				nest_dict[nodeA][nodeB] = "False"
+	return nest_dict
+	
 
-tree1 = PrepTree(tree_fp, tree_type)  	
-
-ancestor_lookup_dict = AncestorLookup(tree1)
-
-tree1.write_to_path(
-        'new_prepped_tree.tre',
-        'newick')
-
-
+an_dict = AncestorLookup(tree1)
+nl = MakeNodeList(node_fp)
+nest_dict = IsNested(nl, an_dict)
+print nest_dict
