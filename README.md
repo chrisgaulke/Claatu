@@ -7,7 +7,7 @@ Version: Alpha
 Overview
 --------
 
-Claatu (***CLA***de diversity ***A***nd hos***T*** evol***U***tion algorithm) uses 16S reads clustered into closed reference OTUS from diverse sample sets to search for patterns of coevolution, codiversification and coreness.
+Claatu (**CLA**de diversity **A**nd hos**T** evol**U**tion algorithm) uses 16S reads clustered into closed reference OTUS from diverse sample sets to search for patterns of coevolution, codiversification and coreness.
 
 Note
 ----
