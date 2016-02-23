@@ -41,11 +41,13 @@ import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
-parser.add_argument("out_fp", help="file path and suffix for out files. No extension needed")
+parser.add_argument("out_fp", help="file path for out files. No extension needed")
+parser.add_argument("-p", "--prefix", help = "prefix to file names", default = "claatu")
 args = parser.parse_args()
 
 tree_fp = args.tree_fp # should be pickled tree from prep tree
 out_fp = args.out_fp
+prefix = args.prefix
 
 tree1 = dendropy.Tree.get(path = "{0}".format(tree_fp), schema = "newick")
 
@@ -94,19 +96,17 @@ def GetMedianDist(dist_dict):
 	dict_median = Median(vals)
 	return dict_median
 		
-#def GetAllDistances(tree):
-#	"calculate the distances for all pairs of nodes"
 	
-level_dict = GetLevel(tree1)
-dist_dict = GetDistRoot(tree1)
-dist_median = GetMedianDist(dist_dict)
+#level_dict = GetLevel(tree1)
+#dist_dict = GetDistRoot(tree1)
+#dist_median = GetMedianDist(dist_dict)
 
 
 def DoYourPrint(level_dict, dist_dict, dist_median, out_fp):
 	"this function prints out the data to files"
-	ldict = "{0}.{1}".format(out_fp, "levels.txt")
-	ddict = "{0}.{1}".format(out_fp, "dist.txt")
-	dmedian = "{0}.{1}".format(out_fp, "dist_median.txt")
+	ldict = "{0}/{1}_{2}".format(out_fp, prefix, "levels.txt")
+	ddict = "{0}/{1}_{2}".format(out_fp, prefix, "dist.txt")
+	dmedian = "{0}/{1}_{2}".format(out_fp, prefix, "dist_median.txt")
 	f1 = open(ldict, 'w+')
 	f2 = open(ddict, 'w+')
 	f3 = open(dmedian, 'w+')

@@ -27,11 +27,11 @@
 #                  #
 ####################  
 
-#################
-#			    #
-#  prep_tree.py #
-#               #
-#################
+##################
+#                #
+#  prep_tree.py  #
+#                #
+##################
 
 
 import dendropy
@@ -42,8 +42,11 @@ import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
+parser.add_argument("-nbs", help="Pass to indicate that the tree doesn't contain bootstraps", action="store_true")
 args = parser.parse_args()
+parser.set_defaults(nbs=False)
 wd = os.getcwd()
+nbs = args.nbs
 
 ####
 #Prep Tree
@@ -55,25 +58,72 @@ tree_type = "newick"
 #might want to save bootstraps for latter
 #this labels tips as tip taxon (i.e., OTU or species name)
 
-def PrepTree(tree_fp, tree_type):
+def PrepTree(tree_fp, tree_type, bs=nbs):
+	#tree_fp: file path to tree
+	#tree_type: type of tree to be processed (only newick type is currently supported)
+	#bs: Boolean, does the tree contain bootstrap values
 	#import tree object
 	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
-	
-	#name nodes
-	node_it = tree1.preorder_node_iter()
 	k = 1
-	for i in node_it:
-		if i.label == None:
-			if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
-				i.label = i.taxon.label
-			else:
-				if hasattr(i, '_parent_node') and i._parent_node != None: #new
-					j = str(k)
-					i.label = "{0}{1}".format("node", j) 
-					k = k + 1
+	if bs==True:	
+		#name nodes
+		node_it = tree1.preorder_node_iter()
+		for i in node_it:
+			if i.label == None:
+				if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
+					i.label = i.taxon.label
 				else:
-					i.label = "root"
+					if hasattr(i, '_parent_node') and i._parent_node != None: #new
+						j = str(k)
+						i.label = "{0}{1}".format("node", j) 
+						k = k + 1
+					else:
+						i.label = "root"
+	else:
+		#name nodes
+		node_it = tree1.preorder_node_iter()
+		for i in node_it:
+			if i.label != None:
+				if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
+					i.label = i.taxon.label
+				else:
+					if hasattr(i, '_parent_node') and i._parent_node != None: #new
+						j = str(k)
+						i.label = "{0}{1}".format("node", j) 
+						k = k + 1
+					else:
+						i.label = "root"
+			else:
+				if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
+					i.label = i.taxon.label
+				else:
+					if hasattr(i, '_parent_node') and i._parent_node != None: #new
+						j = str(k)
+						i.label = "{0}{1}".format("node", j) 
+						k = k + 1
+					else:
+						i.label = "root"
 	return tree1
+
+#def PrepTree(tree_fp, tree_type):
+#	#import tree object
+#	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
+#	
+#	#name nodes
+#	node_it = tree1.preorder_node_iter()
+#	k = 1
+#	for i in node_it:
+#		if i.label == None:
+#			if hasattr(i, 'taxon') and i.taxon != None: # (i.e., a tip)
+#				i.label = i.taxon.label
+#			else:
+#				if hasattr(i, '_parent_node') and i._parent_node != None: #new
+#					j = str(k)
+#					i.label = "{0}{1}".format("node", j) 
+#					k = k + 1
+#				else:
+#					i.label = "root"
+#	return tree1
 
 
 

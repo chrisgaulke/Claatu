@@ -18,12 +18,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
 parser.add_argument("tax_fp", help="file path to the file that contains otus and their tax strings")
 parser.add_argument("out_fp", help="file path for out file. Should have .txt or .tab extension")
+parser.add_argument("-p", "--prefix", help = "prefix to file names", default = "claatu")
 args = parser.parse_args()
 
 tree_fp = args.tree_fp # should be result from prep tree
 tax_fp = args.tax_fp
 out_fp = args.out_fp
-
+prefix = args.prefix
 tree1 = dendropy.Tree.get(path = "{0}".format(tree_fp), schema = "newick")
 
 
@@ -78,8 +79,8 @@ def MapTax2Nodes(tax, node_map):
 	
 def WriteFiles(clade_size, ftax, out_fp):
 	"this will make a table from cml_node_dict"
-	ftax_lab = "{0}_{1}".format(out_fp, "nodes2tax.txt")
-	clade_size_lab = "{0}_{1}".format(out_fp, "clade_size.txt")
+	ftax_lab = "{0}/{1}_{2}".format(out_fp, prefix, "nodes2tax.txt")
+	clade_size_lab = "{0}/{1}_{2}".format(out_fp, prefix, "clade_size.txt")
 
 	f1 = open(ftax_lab, 'w+')
 	for node in ftax:
@@ -96,11 +97,7 @@ def WriteFiles(clade_size, ftax, out_fp):
 
 
 clade_sizes = GetCladeSizes(tree1)	
-#print clade_sizes
 otu2tax = AssignOTULabels2Nodes(tree1)	
-#print otu2tax		
 tax_dict = BuildTaxDict(tax_fp)
-#print tax_dict
 big_dict = MapTax2Nodes(tax_dict, otu2tax)
-#print big_dict
 WriteFiles(clade_sizes, big_dict, out_fp)

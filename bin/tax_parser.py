@@ -34,10 +34,7 @@
 #####################
 
 
-#import dendropy
 import argparse
-
-#might want ot role this into other scripts
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tax_fp", help="file path to the tax dict")
@@ -46,7 +43,6 @@ parser.add_argument("out_fp", help="out file path")
 args = parser.parse_args()
 tax_fp = args.tax_fp
 out_fp = args.out_fp
-#def ParseNode(node):
 
 
 def MakeDict(tax_fp):
@@ -60,24 +56,43 @@ def MakeDict(tax_fp):
 			dict[node] = {'kingdom':{}, 'phylum':{}, 'class':{}, 'order':{}, 'family':{}, 'genus':{}, 'species':{}}
 			tax = lines[1]
 			tax = tax.strip().split(',')
-			#print tax
 		
 			for otu in tax:
-				if otu == '':
+				if otu == '' or otu == "Unassigned":
 					continue
 				otu = otu.strip()
 				divs = otu.split(';')
-				bkingdom = divs[0].strip()
-				bphylum  = divs[1].strip()
-				bclass   = divs[2].strip()
-				border   = divs[3].strip()
-				bfamily  = divs[4].strip()
-				bgenus   = divs[5].strip()
-				bspecies = divs[6].strip()
-				
+				try:
+					bkingdom = divs[0].strip()
+				except IndexError:
+					bkingdom = 'k__'
+				try:
+					bphylum  = divs[1].strip()
+				except IndexError:
+					bphylum = 'p__'
+				try:
+					bclass   = divs[2].strip()
+				except IndexError:
+					bclass = 'c__'
+				try:
+					border   = divs[3].strip()
+				except IndexError:
+					border = 'o__'
+				try:
+					bfamily  = divs[4].strip()
+				except IndexError:
+					bfamily = 'f__'
+				try:
+					bgenus   = divs[5].strip()
+				except IndexError:
+					bgenus = 'g__'
+				try:
+					bspecies = divs[6].strip()
+				except IndexError:
+					bspecies = 's__'
 				if bkingdom != '' and bkingdom in dict[node]['kingdom']:
 					dict[node]['kingdom'][bkingdom] += 1
-				elif bkingdom == '' or bkingdom == None:
+				elif bkingdom == '' or bkingdom == None or bkingdom == "Unassigned":
 					continue
 				else:
 					dict[node]['kingdom'][bkingdom] = 1 
@@ -128,7 +143,10 @@ def GetNodeTax(tax_dict):
 	for node in tax_dict:
 		if len(tax_dict[node]['kingdom']) > 1:
 			f_dict[node] = "mixed_bacteria_archaea"
-			continue 
+			continue
+		elif tax_dict[node]['kingdom'] == '' or tax_dict[node]['kingdom'] == "Unassigned" or len(tax_dict[node]['kingdom']) < 1 :
+			f_dict[node] = "Unassigned"
+			continue
 		for label in tax_dict[node]:
 			if len(tax_dict[node][tax_labels[0]]) == len(tax_dict[node][tax_labels[6]]) and tax_dict[node][tax_labels[6]].keys()[0] != 's__' :
 				for species in tax_dict[node][tax_labels[6]]:

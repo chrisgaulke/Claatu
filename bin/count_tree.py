@@ -51,7 +51,6 @@ tree_fp = args.tree_fp # should be result from prep tree
 out_fp = args.out_fp
 
 tree1 = dendropy.Tree.get(path = "{0}".format(tree_fp), schema = "newick")
-#tree1 = pickle.load(open("/Users/gaulkec/Desktop/Claatu_pickles/prepped_tre.pkl", "rb"))
 
 
 def BiomTabParser(biom):
@@ -92,10 +91,7 @@ def TipAncestorLookup(tree):
 		for ancestor in ancest_it:
 			vals.append(str(ancestor.label))
 		tip = str(node.taxon)
-		#print tip
 		tip = tip.strip('\'')
-		#print tip
-		#tip_ancestors[str(node.taxon)] = vals
 		tip_ancestors[tip] = vals
 	return tip_ancestors
 					
@@ -104,7 +100,6 @@ def AncestorCrawl(ancestors, pbiom):
 	"This functions collects a list of ancestors of each OTU from a reference tree and assigns the count value of each OTU to the ancestor"
 	"""If there are values in the slot already this function will sum the value"""	
 	ancestors = ancestors
-	#print ancestors
 	#Initialize the dict
 	cml_nodes = {}
 	for sample in pbiom:
@@ -112,10 +107,8 @@ def AncestorCrawl(ancestors, pbiom):
 	
 	for sample in pbiom:
 		for otu in pbiom[sample]:
-			#print otu
-			if otu in ancestors: #problem begins here
+			if otu in ancestors:
 				for ant in ancestors[otu]:
-					#print ant
 					if ant in cml_nodes[sample]:
 						cml_nodes[sample][ant] += float(pbiom[sample][otu])
 					else:
@@ -127,7 +120,8 @@ def AncestorCrawl(ancestors, pbiom):
 def MakeTable(cml_node_dict, out_fp):
 	"this will make a table from cml_node_dict"
 	#make a pretty(ish) table 
-	my_col_header = ["Sample"]
+	#my_col_header = ["Sample"]
+	my_col_header =[]
 	my_row_header =[]	
 	#sample list
 	for sample in cml_node_dict:
@@ -152,8 +146,6 @@ def MakeTable(cml_node_dict, out_fp):
 
 my_biom = BiomTabParser(biom_fp)
 tip_an_dict = TipAncestorLookup(tree1)
-#print tip_an_dict
 cml_node_dict = AncestorCrawl(tip_an_dict, my_biom)	
-#print cml_node_dict
 MakeTable(cml_node_dict, out_fp)	
 
