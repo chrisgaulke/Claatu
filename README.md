@@ -17,10 +17,10 @@ Workflow
 
 	```python <path_to_ClaaTU/bin/prep_tree.py> <input_newick_tree.tre>```  
 
-The output of this script is a phylogenetic tree named "new_prepped_tree.tre". You will use this tree for the rest of the workflow.  
+The output of this script is a phylogenetic tree named "new_prepped_tree.tre". You will use this tree for the rest of the workflow.    
 2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a table delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
 
-	```python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path>```
+	```python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path>```  
 
 The output of this script is a clade counts table with internal node identifiers as columns and sample IDs as rows. These data can be used to examine differential abundance of clades across a case and control study. For some this might be where you stop if all you care about is what clades are in a sample and at what abundance. However, we have add some additional scripts downstream that some might find useful.  
 
