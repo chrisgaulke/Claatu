@@ -15,7 +15,7 @@ Workflow
 
 1. The first thing that ClaaTU needs is a newick tree without internal node identifiers. In this step ClaaTU decorates internal nodes with node identifiers that will be used in downstream scripts. If internal node identifiers are present in the tree provided Claatu will overwrite them.  
 
-	python <path_to_ClaaTU/bin/prep_tree.py> <input_newick_tree.tre> 
+	    python <path_to_ClaaTU/bin/prep_tree.py> <input_newick_tree.tre> 
 
     The output of this script is a phylogenetic tree named "new_prepped_tree.tre". You will use this tree for the rest of the workflow.    
 2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a table delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
