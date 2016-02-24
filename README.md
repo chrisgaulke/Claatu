@@ -20,7 +20,7 @@ Workflow
     The output of this script is a phylogenetic tree named "new_prepped_tree.tre". You will use this tree for the rest of the workflow.    
 2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a table delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
 
-	python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path> 
+	    python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path> 
 
     The output of this script is a clade counts table with internal node identifiers as columns and sample IDs as rows. These data can be used to examine differential abundance of clades across a case and control study. For some this might be where you stop if all you care about is what clades are in a sample and at what abundance. However, we have add some additional scripts downstream that some might find useful.  
 
@@ -32,20 +32,20 @@ Workflow
 
 4. Next we try to find which taxonomic level (if any) is shared by each tip in a clade. 
 	
-	```python <path_to_ClaaTU/bin/tax_parser.py> <prefix>_tax2node.txt <outfile_name>```
+		python <path_to_ClaaTU/bin/tax_parser.py> <prefix>_tax2node.txt <outfile_name>
 
-This will output a final taxonomy dictionary that contains a mapping of OTU (column 1) to tax ID (column 2).
+    This will output a final taxonomy dictionary that contains a mapping of OTU (column 1) to tax ID (column 2).
 
 5. Finally, we gather some information about the tree and the nodes in it. 
 
-	```python <path_to_ClaaTU/bin/node_info.py> <prepped_tree> <out_file_path> -p <file_prefix>```
+		python <path_to_ClaaTU/bin/node_info.py> <prepped_tree> <out_file_path> -p <file_prefix>
 
-This should produce three files: <file_prefix>_levels.txt which contains information about how nested a node is, <file_prefix>_dist_median.txt which is a single line file containing the median branch length to the root, and <file_prefix>_dist.txt which gives the branch length to the root from each node. 
+    This should produce three files: <file_prefix>_levels.txt which contains information about how nested a node is, <file_prefix>_dist_median.txt which is a single line file containing the median branch length to the root, and <file_prefix>_dist.txt which gives the branch length to the root from each node. 
 
 ---
 
 Note
 ----
 Claatu is a work in progress and will be undergoing rapid development during the coming months. Growing pains are to be expected so please let me know if you discover a bug. 
-~
+
 
