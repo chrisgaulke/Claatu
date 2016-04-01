@@ -192,8 +192,8 @@ def MakeTable(perm_dict, perms, out_fp):
 	print >> f1, "\n",
 	#Print out coreness for real data (column1) and randomized data (rest of columns)
 	for otu in perm_dict:
-		print >> f1, otu,
-		print >> f1, "\t".join("%10.3f" % x for x in perm_dict[otu]),
+		print >> f1, "%s\t" % otu,
+		print >> f1, "\t".join("%4.3f" % x for x in perm_dict[otu]),
 		print >> f1, "\n",
 	
 	f1.close()
