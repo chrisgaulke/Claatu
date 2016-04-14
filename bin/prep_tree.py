@@ -64,6 +64,7 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 	#bs: Boolean, does the tree contain bootstrap values
 	#import tree object
 	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
+	tree1.reroot_at_midpoint()
 	k = 1
 	if bs==True:	
 		#name nodes
