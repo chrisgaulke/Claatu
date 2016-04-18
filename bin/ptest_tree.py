@@ -43,6 +43,9 @@ import sys
 import dendropy
 from random import randint
 from random import shuffle
+from scipy import mean as mean
+from numpy import std as sd
+from scipy.stats import norm as norm
 
 parser = argparse.ArgumentParser()
 parser.add_argument("biom_fp", help="file path to the biom table to be used")
@@ -229,7 +232,7 @@ def RunIter(biom_fp, perms, tree, out_fp, method):
 				perm_dict[otu].append(core_dict[otu])
 	
 	MakeTable(perm_dict, perms, out_fp)
-	
+	Ztest(perm_dict, out_fp)
 	return None 
 
 #need to make a function that will parse a mapping file
@@ -313,8 +316,34 @@ def RunGroupIter(biom_fp, perms, tree, out_fp, method, map):
 				for clade in core_dict[group]:
 					perm_dict['_'.join([clade,group])].append(core_dict[group][clade])
 	MakeTable(perm_dict, perms, out_fp)
-	
+	Ztest(perm_dict, out_fp)
 	return None	 
+
+def Ztest(perm_dict, out_fp):
+	"this calculate a zscore and zstat from perm_dict values"
+	#Print out ztest results
+	#Columns are 1) exp coreness 2) Permutation mean 3) Perm sd 4) clade zscore 5) pval
+	out_file = out_fp + "_stats.txt" 
+	f1 = open(out_file, 'w+')
+	for otu in perm_dict:
+		exp = perm_dict[otu][0] # observed coreness
+		m = mean(perm_dict[otu][1:]) # mean perms 
+		s = sd(perm_dict[otu][1:]) # standard deviation perms
+		if s == 0: # might need to develop a different solution for this. 
+			z = 1
+			p = norm.sf(z) #upper tail of cumulative probability distribution
+			print >> f1, "%s\t" % otu,
+			print >> f1, "\t".join("%.2E" % x for x in [exp,m,s,z,p]), #join stats and print
+			print >> f1, "\n",	
+		else: 
+			z = (float(exp) - float(m)) / float(s) #zscore
+			p = norm.sf(z) #upper tail of cumulative probability distribution
+			print >> f1, "%s\t" % otu,
+			#print >> f1, "\t".join("%4.3f" % x for x in [exp,m,s,z,p]), #join stats and print
+			print >> f1, "\t".join("%.2E" % x for x in [exp,m,s,z,p]), #join stats and print
+			print >> f1, "\n",	
+	f1.close()
+	return None
 
 
 if map == None:
@@ -322,9 +351,4 @@ if map == None:
 else:
 	RunGroupIter(biom_fp, perms, tree1, out_fp, method, map)
 	
-
-
-#mmap = ParseMap(map)
-#print mmap
-#RunIter(biom_fp, perms, tree1, out_fp, method)
 
