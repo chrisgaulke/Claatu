@@ -10,6 +10,15 @@ Overview
 
 The ClaaTU (**Cla**d**a**l **T**axonomic **U**nits) workflow uses data files produced by third party microbiome analysis software (e.g., QIIME and Mothur) to identify and quantify the abundance of specific clades in a user provided phylogenetic tree. This allows us to examine the abundance of clades across the input tree from tip to root. Currently, ClaaTU is run as a collection of scripts and a workflow is provided below. 
 
+Dependencies 
+------------
+1. python (2.7.10)
+2. dendropy (4.0.2)
+3. scipy (0.13.0b1)
+4. numpy (1.8.0rc1)
+
+ClaaTU has only been tested with the versions of the packages indicated. 
+
 Workflow
 --------
 
