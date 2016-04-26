@@ -51,6 +51,16 @@ Workflow
 
     This should produce three files: <file_prefix>_levels.txt which contains information about how nested a node is, <file_prefix>_dist_median.txt which is a single line file containing the median branch length to the root, and <file_prefix>_dist.txt which gives the branch length to the root from each node. 
 
+5. [optional] To determine if a clade is more core than expected by random chance we can conduct a ptest. By default this will evaluate coreness across all samples in a biom table. For this analysis you will need a OTU table in text format, and a prepped tree. You also must specify the number of permutations with the -p flag.
+
+		python <path_to_ClaaTU/bin/ptest_tree.py> <otu_table.txt> <prepped_tree> <outfile.txt> -p <#permutations>
+
+    Alternatively you can create a mapping file that maps sample ids to some group id. This mapping file should be tab delimited (i.e.,sample_ID tab group_id) and should not contain a header.
+
+ ^I^Ipython <path_to_ClaaTU/bin/ptest_tree.py> <otu_table.txt> <prepped_tree> <outfile.txt> -p <#permutations> -g <mapping_file>
+
+    After the completion of the random permutations ptest_tree.py calculates a zscore and p-value for each observed coreness value. When no mapping file is given to ptest_tree.py one pvalue is calculated per clade. However, if a mapping file is passed to ptest_tree.py then a p-value is calculated for each clade and each group. For example, if you have 3 groups in the mapping file each clade will have three p-values, one for each group. The output of this will be two files 1) outfile.txt (where outfile is the name you specified), and 2) out_file.txt_stats.txt. Outfile.txt will contain several columns, the first is the clade_ID, the second is the observed coreness, and the third - #permutations is the coreness of the permuted OTU table. Outfile.txt_stats.txt will contain a number of summary statistics in several columns. Column 1 is the observed coreness, column 2 is the mean coreness of the permutations, column 3 is the standard deviation of the coreness permutations, column 4 is the zscore, column 5 is the p-value of the ztest.
+
 ---
 
 Note
