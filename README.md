@@ -57,7 +57,7 @@ Workflow
 
     Alternatively you can create a mapping file that maps sample ids to some group id. This mapping file should be tab delimited (i.e.,sample_ID tab group_id) and should not contain a header.
 
- ^I^Ipython <path_to_ClaaTU/bin/ptest_tree.py> <otu_table.txt> <prepped_tree> <outfile.txt> -p <#permutations> -g <mapping_file>
+ 		python <path_to_ClaaTU/bin/ptest_tree.py> <otu_table.txt> <prepped_tree> <outfile.txt> -p <#permutations> -g <mapping_file>
 
     After the completion of the random permutations ptest_tree.py calculates a zscore and p-value for each observed coreness value. When no mapping file is given to ptest_tree.py one pvalue is calculated per clade. However, if a mapping file is passed to ptest_tree.py then a p-value is calculated for each clade and each group. For example, if you have 3 groups in the mapping file each clade will have three p-values, one for each group. The output of this will be two files 1) outfile.txt (where outfile is the name you specified), and 2) out_file.txt_stats.txt. Outfile.txt will contain several columns, the first is the clade_ID, the second is the observed coreness, and the third - #permutations is the coreness of the permuted OTU table. Outfile.txt_stats.txt will contain a number of summary statistics in several columns. Column 1 is the observed coreness, column 2 is the mean coreness of the permutations, column 3 is the standard deviation of the coreness permutations, column 4 is the zscore, column 5 is the p-value of the ztest.
 
