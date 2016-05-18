@@ -137,8 +137,11 @@ def MakeTable(cml_node_dict, out_fp):
 	#Print sample by OTUs
 	for sample in my_row_header:
 		print >> f1,"%s\t" % (sample),
-		for i in range(1, len(my_col_header)):
-			print >> f1, "%s\t" % (cml_node_dict[sample][my_col_header[i]]),
+		for i in range(0, len(my_col_header)):
+			if i < (len(my_col_header) - 1): 
+				print >> f1, "%s\t" % (cml_node_dict[sample][my_col_header[i]]),
+			else: 
+				print >> f1, "%s" % (cml_node_dict[sample][my_col_header[i]]),
 		print >> f1, "\n",
 	f1.close()
 	return None
