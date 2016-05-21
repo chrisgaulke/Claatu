@@ -53,7 +53,7 @@ tree1 = dendropy.Tree.get(path = "{0}".format(tree_fp), schema = "newick")
 
 def GetLevel(tree):
 	"return a dict of the level of each node"	
-	node_it = tree.preorder_node_iter()
+	node_it = tree.preorder_internal_node_iter()
 	level_dict = {}
 	for node in node_it:
 		a = node.level()
@@ -62,7 +62,7 @@ def GetLevel(tree):
 
 def	GetDistRoot(tree):
 	"return a list of distances from node -> root"
-	node_it = tree.preorder_node_iter()
+	node_it = tree.preorder_internal_node_iter()
 	rootdist_dict = {}
 	for node in node_it:
 		if node.edge_length == None:
