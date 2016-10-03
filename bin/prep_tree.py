@@ -43,9 +43,12 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("tree_fp", help="file path to the tree that is to be modified")
 parser.add_argument("-nbs", help="Pass to indicate that the tree doesn't contain bootstraps", action="store_true")
+parser.add_argument("-up_bi", help="Pass to indicate you wish to update bipartitions", action="store_true")
 args = parser.parse_args()
 parser.set_defaults(nbs=False)
+parser.set_defaults(up_bi=False)
 wd = os.getcwd()
+up_bi = args.up_bi
 nbs = args.nbs
 
 ####
@@ -64,7 +67,14 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 	#bs: Boolean, does the tree contain bootstrap values
 	#import tree object
 	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
-	tree1.reroot_at_midpoint()
+
+	if up_bi==True:
+		print("up_bi=T")
+		tree1.reroot_at_midpoint(update_bipartitions=True)
+	else:
+		print("up_bi=F")
+		tree1.reroot_at_midpoint(update_bipartitions=False)
+
 	k = 1
 	if bs==True:	
 		#name nodes
