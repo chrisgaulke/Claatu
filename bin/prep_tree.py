@@ -68,9 +68,13 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 	#tree_fp: file path to tree
 	#tree_type: type of tree to be processed (only newick type is currently supported)
 	#bs: Boolean, does the tree contain bootstrap values
+	
 	#import tree object
 	tree1 = dendropy.Tree.get_from_path("{0}".format(tree_fp), schema="{0}".format(tree_type))
 	
+	#make node bootstrap dictionary 
+	bootstraps = {}
+	bootstraps['root'] = 0.0
 	if mid==True:
 		if up_bi==True:
 			#print("up_bi=T")
@@ -90,7 +94,11 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 				else:
 					if hasattr(i, '_parent_node') and i._parent_node != None: #new
 						j = str(k)
-						i.label = "{0}{1}".format("node", j) 
+						mlabel = "{0}{1}".format("node", j)
+						#print(mlabel)
+						bootstraps[mlabel] = i.label
+						i.label = mlabel
+						#i.label = "{0}{1}".format("node", j) 
 						k = k + 1
 					else:
 						i.label = "root"
@@ -104,7 +112,10 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 				else:
 					if hasattr(i, '_parent_node') and i._parent_node != None: #new
 						j = str(k)
-						i.label = "{0}{1}".format("node", j) 
+						mlabel = "{0}{1}".format("node", j)
+						bootstraps[mlabel] = i.label
+						i.label = mlabel
+						#i.label = "{0}{1}".format("node", j) 
 						k = k + 1
 					else:
 						i.label = "root"
@@ -114,10 +125,18 @@ def PrepTree(tree_fp, tree_type, bs=nbs):
 				else:
 					if hasattr(i, '_parent_node') and i._parent_node != None: #new
 						j = str(k)
-						i.label = "{0}{1}".format("node", j) 
+						mlabel = "{0}{1}".format("node", j)
+						bootstraps[mlabel] = i.label
+						i.label = mlabel
+						#i.label = "{0}{1}".format("node", j) 
 						k = k + 1
 					else:
 						i.label = "root"
+	#print(bootstraps)
+	f = open("bootstraps_prep_tree.txt", 'w')
+	for key, value in bootstraps.iteritems():
+		f.write('%s\t%s\n' % (key, value))
+	f.close()
 	return tree1
 
 #def PrepTree(tree_fp, tree_type):
