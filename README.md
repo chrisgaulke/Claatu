@@ -32,6 +32,9 @@ Workflow
 	    python <path_to_ClaaTU/bin/prep_tree.py> <input_newick_tree.tre> 
 
     The output of this script is a phylogenetic tree named "new_prepped_tree.tre". You will use this tree for the rest of the workflow.    
+
+<p align="center"><img src="docs/claatu_counts.png" width=500 align="middle"/> </p>
+
 2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a table delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
 
 	    python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path> 
@@ -42,13 +45,17 @@ Workflow
  
 		python <path_to_ClaaTU/bin/clade_stat.py> <prepped_tree> <tax_file> <out_file_path> -p <file_prefix>
 
-    This generates a tab delimited text file (<file_prefix>_tax2node.txt) with clade ID in the first column and a list of taxonomy strings in the second column.  
+    This generates a tab delimited text file (<file_prefix>_node2tax.txt) with clade ID in the first column and a list of taxonomy strings in the second column.  
+
+<p align="center"><img src="docs/claatu_tax.png" width=500 align="middle"/> </p>
 
 4. Next we try to find which taxonomic level (if any) is shared by each tip in a clade. 
 	
-		python <path_to_ClaaTU/bin/tax_parser.py> <prefix>_tax2node.txt <outfile_name>
+		python <path_to_ClaaTU/bin/tax_parser.py> <prefix>_node2tax.txt <outfile_name>
 
-    This will output a final taxonomy dictionary that contains a mapping of OTU (column 1) to tax ID (column 2).
+    This will output a final taxonomy dictionary that contains a mapping of clade (column 1) to tax ID (column 2).
+
+<p align="center"><img src="docs/claatu_size_level.png" width=500 align="middle"/> </p>
 
 5. Finally, we gather some information about the tree and the nodes in it. 
 
