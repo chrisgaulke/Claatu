@@ -25,7 +25,7 @@ ClaaTU has only been tested with the versions of the packages indicated.
 Workflow
 --------
 
-<p align="center"><img src="docs/claatu_fig.png" width=500 align="middle"/> </p>
+<p align="center"><img src="docs/claatu_prep_tree.png" width=500 align="middle"/> </p>
 
 1. The first thing that ClaaTU needs is a newick tree without internal node identifiers. In this step ClaaTU decorates internal nodes with node identifiers that will be used in downstream scripts. If internal node identifiers are present in the tree provided Claatu will overwrite them.  
 
