@@ -3,7 +3,7 @@ ClaaTU
 
 A workflow for quantifying clade abundance in phylogenetic trees.
 
-Version: Alpha
+Version: 0.1
 
 Overview
 --------
@@ -35,7 +35,7 @@ Workflow
 
 <p align="center"><img src="docs/claatu_counts.png" width=500 align="middle"/> </p>
 
-2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a table delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
+2. Now that we have the ClaaTU ready tree we can get to work. The next script that we will run will take in a tab delimited table of OTU counts. You should have this from you microbiome analysis. Note that ClaaTU will not recognize a biom formatted table, so be sure to convert you biom table to text format. 
 
 	    python <path_to_ClaaTU/bin/count_tree.py> <otu_table> <prepped_tree> <out_file_path> 
 
@@ -71,7 +71,7 @@ Workflow
 
  		python <path_to_ClaaTU/bin/ptest_tree.py> <otu_table.txt> <prepped_tree> <outfile.txt> -p <#permutations> -g <mapping_file>
 
-    After the completion of the random permutations ptest_tree.py calculates a zscore and p-value for each observed coreness value. When no mapping file is given to ptest_tree.py one pvalue is calculated per clade. However, if a mapping file is passed to ptest_tree.py then a p-value is calculated for each clade and each group. For example, if you have 3 groups in the mapping file each clade will have three p-values, one for each group. The output of this will be two files 1) outfile.txt (where outfile is the name you specified), and 2) out_file.txt_stats.txt. Outfile.txt will contain several columns, the first is the clade_ID, the second is the observed coreness, and the third - #permutations is the coreness of the permuted OTU table. Outfile.txt_stats.txt will contain a number of summary statistics in several columns. Column 1 is the observed coreness, column 2 is the mean coreness of the permutations, column 3 is the standard deviation of the coreness permutations, column 4 is the zscore, column 5 is the p-value of the ztest.
+    After the completion of the random permutations ptest_tree.py calculates a zscore and p-value for each observed coreness value. When no mapping file is given to ptest_tree.py one pvalue is calculated per clade. However, if a mapping file is passed to ptest_tree.py then a p-value is calculated for each clade and each group. For example, if you have 3 groups in the mapping file each clade will have three p-values, one for each group. The output of this will be two files 1) outfile.txt (where outfile is the name you specified), and 2) out_file.txt_stats.txt. Outfile.txt will contain several columns, the first is the clade_ID, the second is the observed coreness, and the third - #permutations is the coreness of the permuted OTU table. Outfile.txt_stats.txt will contain a number of summary statistics in several columns. Column 1 contains the node names, column 2 is the observed coreness, column 3 is the mean coreness of the permutations, column 4 is the standard deviation of the coreness permutations, column 5 is the zscore, column 6 is the p-value of the ztest.
 
 ----
 
@@ -83,6 +83,6 @@ This material is based upon work supported by the National Science Foundation un
 ---
 Note
 ----
-Claatu is a work in progress and will be undergoing rapid development during the coming months. Growing pains are to be expected so please let me know if you discover a bug. 
+Like most bioinformatic software CLaaTu is a work in progress. Growing pains are to be expected so please let me know if you discover a bug. 
 
 
