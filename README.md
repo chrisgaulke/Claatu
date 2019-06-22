@@ -3,7 +3,7 @@ ClaaTU
 
 A workflow for quantifying clade abundance in phylogenetic trees.
 
-Version: 0.1
+Version: 1.0
 
 Overview
 --------
